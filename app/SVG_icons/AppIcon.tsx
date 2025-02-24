@@ -1,12 +1,12 @@
 import React from "react";
 
 interface AppIconProps {
-  width?: number;
-  height?: number;
+  width?: string;
+  height?: string;
   color?: string;
 }
 
-const AppIcon: React.FC<AppIconProps> = ({ width = 16, height = 16, color = "#000000" }) => {
+const AppIcon: React.FC<AppIconProps> = ({ width = "16", height = "16", color = "#000000" }) => {
   return (
     <svg
       width={width}
