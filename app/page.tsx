@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div>
-      <h1 className="font-poppins font-bold text-3xl">Habit Tracker Website</h1>
+      <h1 className="font-poppins font-bold text">Habit Tracker Website</h1>
     </div>
   );
 }
