@@ -12,6 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      //added new
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"], // ✅ Add this
       },
