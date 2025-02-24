@@ -1,5 +1,5 @@
 import React from "react";
-import AppIcon from "../SVG_icons/AppIcon"; 
+import AppIcon from "../SVG_icons/AppIcon";
 
 function Navbar() {
   return (
@@ -10,7 +10,7 @@ function Navbar() {
           <div className="flex gap-2 items-center sm:justify-start justify-center">
             <span className="text-2xl font-light flex items-center gap-2">
               {/* The Icon */}
-              <div className="p-2 rounded-md bg-[##0c074d]">
+              <div className="p-2 rounded-md bg-[#0c074d]">
                 <AppIcon color="#ffffff" height="34" width="34" />
               </div>
               {/* The Name of the app */}
@@ -23,7 +23,7 @@ function Navbar() {
         {/* Buttons */}
         <div className="mt-4 flex flex-col gap-4 sm:mt-0 sm:flex-row sm:items-center">
           <button
-            className="block sm:w-32 w-full rounded-lg px-9 py-3 text-sm font-medium text-white bg-[##0c074d] transition focus:outline-none hover:bg-blue-700"
+            className="block sm:w-32 w-full rounded-lg px-9 py-3 text-sm font-medium text-white bg-[#1627de] transition focus:outline-none hover:bg-blue-700"
             type="button"
           >
             Sign In
