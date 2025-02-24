@@ -1,5 +1,5 @@
 import React from "react";
-import AppIcon from "../SVG-icons/AppIcon"; 
+import AppIcon from "../SVG_icons/AppIcon"; 
 
 function Navbar() {
   return (
