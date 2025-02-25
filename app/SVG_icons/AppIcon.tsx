@@ -15,7 +15,7 @@ const AppIcon: React.FC<AppIconProps> = ({ width = "16", height = "16", color = 
       width={width}
       height={height}
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0">
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
         <rect
           x="-1.6"
           y="-1.6"
@@ -23,7 +23,7 @@ const AppIcon: React.FC<AppIconProps> = ({ width = "16", height = "16", color = 
           height="19.20"
           rx="0"
           fill="#061251ffffff"
-          stroke-width="0"
+          strokeWidth="0"
         />
       </g>
       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
