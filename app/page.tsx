@@ -1,10 +1,11 @@
 import React from "react";
 import Navbar from "./mainPageComponents/Navbar";
+import HeroSection from "./mainPageComponents/HeroSection";
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <h1 className="font-poppins font-bold text"></h1>
+      <HeroSection />
     </div>
   );
 }
