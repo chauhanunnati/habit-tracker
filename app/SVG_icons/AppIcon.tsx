@@ -6,15 +6,27 @@ interface AppIconProps {
   color?: string;
 }
 
-const AppIcon: React.FC<AppIconProps> = ({ width = "16", height = "16", color = "#000000" }) => {
+const AppIcon: React.FC<AppIconProps> = ({ width = "16", height = "16", color = "#061251" }) => {
   return (
     <svg
-      width={width}
-      height={height}
-      viewBox="0 0 16 16"
+      viewBox="-1.6 -1.6 19.20 19.20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
     >
+      <g id="SVGRepo_bgCarrier" stroke-width="0">
+        <rect
+          x="-1.6"
+          y="-1.6"
+          width="19.20"
+          height="19.20"
+          rx="0"
+          fill="#061251ffffff"
+          stroke-width="0"
+        />
+      </g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         <path d="M11 1H1V3H11V1Z" fill={color} />
         <path d="M1 5H15V7H1V5Z" fill={color} />

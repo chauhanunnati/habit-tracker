@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customRed: "var(--primary-color)", // Custom primary color added
       },
       //added new
       fontFamily: {

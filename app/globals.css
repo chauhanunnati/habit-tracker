@@ -5,16 +5,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #d90429; /* Custom primary color */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary-color: #d90429; /* Custom primary color remains the same in dark mode */
   }
 }
 
-/*newly added*/
+/* Newly added */
 html {
   font-family: var(--font-poppins);
 }
