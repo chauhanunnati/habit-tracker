@@ -8,5 +8,4 @@ async function connectToDB(){
         console.log(error);
     }
 }
-
 export default connectToDB;

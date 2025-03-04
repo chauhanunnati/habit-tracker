@@ -1,4 +1,3 @@
-import { EmailAddress } from "@clerk/nextjs/server";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
