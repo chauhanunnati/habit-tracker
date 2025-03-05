@@ -4,6 +4,7 @@ import React from "react";
 import AppIcon from "../SVG_icons/AppIcon";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
+import LogoAnName from "../Components/LogoAnName";
 
 function Navbar() {
   const { userId } = useAuth();
@@ -22,9 +23,8 @@ function Navbar() {
                 style={{ color: "#d90429" }} 
                 className="font-bold text-customRed"
               >
-                  Habit
+              <LogoAnName />   
               </span>
-              <span className="font-light">Tracker</span>
             </span>
           </div>
         </div>

@@ -2,12 +2,14 @@
 
 import React from "react";
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import Sidebar from "../Components/SideBar/SideBar";
 
 function Dashboard(){
     const { user } = useUser();
     return (
-        <div>
-            Hello, {user?.lastName} <SignOutButton> Signout </SignOutButton>
+        <div className="flex">
+            <Sidebar />
+            <div>This is a page</div>
         </div>
     );
 }
