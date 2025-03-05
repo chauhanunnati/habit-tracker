@@ -21,7 +21,9 @@ function SingleMenuItem({ menuItemProp }: { menuItemProp: menuItemType }) {
     const { menuItemsObject } = useGlobalContextProvider();
     return (
         <div
-            className={'flex gap-2 items-center p-2 mb-3 ml-8 cursor-pointer rounded-md w-36 ${ menuItemProp.isSelected ? "bg-customRed text-white" : ""}'}
+            className={`flex gap-2 items-center p-2 mb-3 ml-8 
+                cursor-pointer rounded-md w-36 ${ 
+                menuItemProp.isSelected ? "bg-customRed text-white" : ""}`}
         >
             <FontAwesomeIcon 
                 className=" "
