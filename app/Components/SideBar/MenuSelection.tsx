@@ -19,11 +19,25 @@ function MenuSelection() {
 
 function SingleMenuItem({ menuItemProp }: { menuItemProp: menuItemType }) {
     const { menuItemsObject } = useGlobalContextProvider();
+    const { menuItems, setMenuItems } = menuItemsObject;
+    function handleClickedItem() {
+        const copyMenuItems = menuItems.map((menuItem) => {
+            if (menuItemProp.name === menuItem.name) {
+                return { ...menuItem, isSelected: true };
+            }
+
+            return { ...menuItem, isSelected: false };
+        });
+        setMenuItems(copyMenuItems);
+    }
     return (
         <div
             className={`flex gap-2 items-center p-2 mb-3 ml-8 
                 cursor-pointer rounded-md w-36 ${ 
-                menuItemProp.isSelected ? "bg-customRed text-white" : ""}`}
+                menuItemProp.isSelected 
+                ? "bg-customRed transition-all text-white"
+                : "hover:text-customRed"
+            } `}
         >
             <FontAwesomeIcon 
                 className=" "
