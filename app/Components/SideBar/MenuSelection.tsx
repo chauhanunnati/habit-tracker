@@ -32,6 +32,7 @@ function SingleMenuItem({ menuItemProp }: { menuItemProp: menuItemType }) {
     }
     return (
         <div
+            onClick={handleClickedItem}
             className={`flex gap-2 items-center p-2 mb-3 ml-8 
                 cursor-pointer rounded-md w-36 ${ 
                 menuItemProp.isSelected 
