@@ -2,7 +2,6 @@ import React from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
 
 function UserProfile() {
-    const { user } = useUser(); // Get user details
 
     const userButtonAppearance = {
         elements: {
@@ -11,8 +10,10 @@ function UserProfile() {
         },
     };
 
+    const { user } = useUser(); // Get user details
+
     return (
-        <div className="flex flex-col gap-3 items-center justify-center mt-8">
+        <div className="flex flex-col gap-3 items-center justify-center mt-8 max-lg-hidden">
             <UserButton appearance={userButtonAppearance} />
             <div>
                 <span>{user?.fullName || "Guest"}</span>
