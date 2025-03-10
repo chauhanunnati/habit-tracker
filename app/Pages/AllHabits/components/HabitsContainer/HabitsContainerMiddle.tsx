@@ -10,6 +10,8 @@ export default function HabitsContainerMiddle() {
     return (
         <div className="p-3">
             <HabitCard />
+            <HabitCard />
+            <HabitCard />
         </div>
     );
 }
