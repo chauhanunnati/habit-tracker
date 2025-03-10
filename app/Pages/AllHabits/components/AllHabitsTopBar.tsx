@@ -6,7 +6,6 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { UserButton, UserProfile } from "@clerk/nextjs";
 
 function AllHabitsTopBar() {
-
   const userButtonAppearance = {  
     elements: {  
         userButtonAvatarBox: "w-10 h-10", // Custom width and height  
@@ -40,8 +39,7 @@ function AllHabitsTopBar() {
           className="2 max-xl:flex hidden mt-[15px] cursor-pointer"  
           icon={faBars}  
     />  
-</div>  
-
+</div> 
     </div>
   );
 }

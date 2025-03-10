@@ -13,7 +13,7 @@ function UserProfile() {
     const { user } = useUser(); // Get user details
 
     return (
-        <div className="flex flex-col gap-3 items-center justify-center mt-8 max-lg-hidden">
+        <div className="flex flex-col gap-3 items-center justify-center mt-8 max-lg:hidden">
             <UserButton appearance={userButtonAppearance} />
             <div>
                 <span>{user?.fullName || "Guest"}</span>

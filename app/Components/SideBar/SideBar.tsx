@@ -1,15 +1,24 @@
 import React from "react";
 import LogoAnName from "../LogoAnName";
+import { useGlobalContextProvider } from "@/Types/contextApi";
 import MenuSelection from "./MenuSelection";
 import LogoutSection from "./LogoutSection";
+
 function Sidebar() {
-    return (
-        <div className="max-xl:hidden flex-grow p-10 flex-col bg-white min-h-screen">  
-            <LogoAnName />
-            <MenuSelection />
-            <LogoutSection />
-        </div>
-    );
+  const { openSideBarObject } = useGlobalContextProvider();
+  const { openSideBar, setOpenSideBar } = openSideBarObject; // Ensure correct destructuring
+
+  return (
+    <div
+      className={`${
+        !openSideBar ? "max-xl:hidden" : "fixed shadow-lg"
+      } flex-grow z-50 p-10 flex-col bg-white min-h-screen`}
+    >
+      <LogoAnName />
+      <MenuSelection />
+      <LogoutSection />
+    </div>
+  );
 }
 
 export default Sidebar;

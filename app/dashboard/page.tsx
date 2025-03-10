@@ -50,3 +50,18 @@ function Dashboard(){
 }
 
 export default Dashboard;
+
+function BlackSoftLayer() {
+    const { openSideBarObject } = useGlobalContextProvider();
+    const { openSideBar, setOpenSideBar } = openSideBarObject; // Ensure setOpenSideBar is destructured
+  
+    return (
+      <div
+        className={`w-full h-full bg-black fixed top-0 left-0 opacity-20 z-40 ${
+          openSideBar ? "fixed" : "hidden"
+        }`}
+        onClick={() => setOpenSideBar(false)} // Ensure closing functionality
+      ></div>
+    );
+  }
+  
