@@ -1,6 +1,7 @@
 import React from "react";
 import AllHabitsTopBar from "./components/AllHabitsTopBar";
 import AllHabitsRightSideBar from "./components/AllHabitsRightSideBar";
+import HabitsContainer from "./components/HabitsContainer";
 
 function AllHabits() {
   return (
@@ -10,6 +11,9 @@ function AllHabits() {
           <AllHabitsTopBar />
         </div>
         <AllHabitsRightSideBar />
+      </div>
+      <div>
+        <HabitsContainer />
       </div>
     </div>
   );
