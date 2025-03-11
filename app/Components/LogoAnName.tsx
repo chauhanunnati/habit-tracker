@@ -5,13 +5,13 @@ function LogoAnName() {
         <div className="flex gap-2 items-center sm:justify-start justify-center">
             <span className="text-2x1 font-light flex items-center gap-2 ">
                 <div
-                    style={{ backgroundColor: defaultColor }}
+                    style={{ backgroundColor:defaultColor.default }}
                     className=" p-2 rounded-md"
                 >
                     <AppIcon color="#ffffff" height="34" width="34" />
                 </div>
                 <span
-                    style={{ color: defaultColor }}
+                    style={{ color: defaultColor.default }}
                     className="font-bold text-mainColor"
                 >
                     Habit
