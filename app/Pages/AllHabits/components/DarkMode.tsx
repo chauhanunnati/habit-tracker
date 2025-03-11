@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import { useGlobalContextProvider } from "@/Types/contextApi";;
+import { useGlobalContextProvider } from "@/Types/contextApi";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type DarkModeItem = {
@@ -12,12 +12,8 @@ type DarkModeItem = {
 
 function DarkMode() {
   const { darkModeObject } = useGlobalContextProvider();
-  const { isDarkMode, setDarkMode } = darkModeObject;
-
-  const [darkModeItems, setDarkModeItems] = useState<DarkModeItem[]>([
-    { id: 1, icon: faSun, isSelected: !isDarkMode },
-    { id: 2, icon: faMoon, isSelected: isDarkMode },
-  ]);
+  const { isDarkMode, setDarkMode, darkModeItems, setDarkModeItems } = 
+    darkModeObject;
 
   function handleClickedItem(singleItemIndex: number) {
     const updatedDarkModeItems = darkModeItems.map((darkModeItem, index) => {
@@ -26,7 +22,7 @@ function DarkMode() {
       }
       return { ...darkModeItem, isSelected: false };
     });
-
+    
     setDarkModeItems(updatedDarkModeItems);
   }
 
@@ -35,7 +31,7 @@ function DarkMode() {
       if (singleItem.id === 1 && singleItem.isSelected) {
         setDarkMode(false);
       }
-
+      
       if (singleItem.id === 2 && singleItem.isSelected) {
         setDarkMode(true);
       }
@@ -43,34 +39,17 @@ function DarkMode() {
   }, [darkModeItems, setDarkMode]);
 
   return (
-    <div className="bg-slate-50 w-[90px] relative rounded-3xl flex">
+    <div>
       {darkModeItems.map((singleItem, singleItemIndex) => (
-        <div
-          key={singleItemIndex}
+        <div 
           onClick={() => handleClickedItem(singleItemIndex)}
           className="h-full w-[45px] z-40 flex justify-center items-center"
         >
-          <FontAwesomeIcon
-            className={`${
-              singleItem.isSelected ? "text-customRed" : "text-gray-300"
-            } cursor-pointer`}
-            icon={singleItem.icon}
-            width={20}
-            height={20}
-          />
+          <FontAwesomeIcon icon={singleItem.icon} />
         </div>
       ))}
-
-      <div
-        className={`w-[38px] absolute h-[38px] top-1 transform ${
-          isDarkMode ? "translate-x-[48px]" : "translate-x-1"
-        } rounded-full bg-white transition-all`}
-      ></div>
     </div>
   );
 }
 
 export default DarkMode;
-
-
-
