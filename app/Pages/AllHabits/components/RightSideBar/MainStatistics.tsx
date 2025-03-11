@@ -66,8 +66,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         { name: "Remaining", value: 100 - progress },  
     ];  
 
-    const COLORS = [defaultColor.default, "#edf2f4"];  
-    const COLORS = [defaultColor.default, "#edf2f4"];  
+    const COLORS = [defaultColor.default, "#edf2f4"];
 
     return (  
         <PieChart  
