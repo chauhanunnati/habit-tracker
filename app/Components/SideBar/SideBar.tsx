@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import LogoAnName from "../LogoAnName";
-import { useGlobalContextProvider } from "@/Types/contextApi";
 import MenuSelection from "./MenuSelection";
 import LogoutSection from "./LogoutSection";
 import { darkModeColor, defaultColor } from "@/colors";
+import { useGlobalContextProvider } from "@/Types/contextApi";
 
 function Sidebar() {
   const { openSideBarObject, darkModeObject } = useGlobalContextProvider();

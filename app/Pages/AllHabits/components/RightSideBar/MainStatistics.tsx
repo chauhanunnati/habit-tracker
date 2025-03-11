@@ -1,17 +1,25 @@
 import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
-import { defaultColour } from "@/colors";
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { defaultColor, darkModeColor } from "@/colors";
 
 function MainStatistics() {
+    const { darkModeObject } = useGlobalContextProvider();
+    const { isDarkMode } = darkModeObject;
+
     const statisticsInfo = [
         { id: 1, num: 10, subTitle: "Best streaks" },
         { id: 2, num: 12, subTitle: "Perfect days" },
     ];
 
     return (
-            <div 
-                className="flex mx-4 flex-col gap-6 justify-center items-center mt-14
-                    bg-slate-50 rounded-xl p-5 pt-7"
+            <div
+            style={{
+                backgroundColor: isDarkMode
+                    ? darkModeColor.backgroundSlate
+                    : defaultColor.backgroundSlate,
+            }} 
+                className="flex mx-4 flex-col gap-6 justify-center items-center mt-14 rounded-xl p-5 pt-7"
             >
                 <span className="font-bold text-xl cursor-pointer hover:text-customRed">
                     Statistics
@@ -32,7 +40,13 @@ function MainStatistics() {
                     <div className="flex items-center gap-3" key={singleItemIndex}>
                         <div className="flex h-2 w-2 bg-customRed rounded-full"></div>
                         <span className="flex flex-col font-bold">{singleItem.num}</span>
-                        <span className="text-gray-500">{singleItem.subTitle}</span>
+                        <span 
+                            style={{
+                                color: isDarkMode ? darkModeColor.textColor : defaultColor.textColor50,
+                            }}
+                            className=" "
+                            >
+                            {singleItem.subTitle}</span>
                     </div>
                 ))}
             </div>
@@ -52,7 +66,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         { name: "Remaining", value: 100 - progress },  
     ];  
 
-    const COLORS = [defaultColour.default, "#edf2f4"];  
+    const COLORS = [defaultColor.default, "#edf2f4"];  
 
     return (  
         <PieChart  
@@ -72,6 +86,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
                 fill="#8844d8"  
                 paddingAngle={0}  
                 dataKey="value"  
+                stroke="none"
             >  
                 {data.map((entry, index) => (  
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />  

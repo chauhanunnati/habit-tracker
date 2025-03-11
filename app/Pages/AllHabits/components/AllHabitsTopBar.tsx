@@ -4,22 +4,32 @@ import DarkMode from "./DarkMode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { UserButton, UserProfile } from "@clerk/nextjs";
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { darkModeColor, defaultColor } from "@/colors";
 
 function AllHabitsTopBar() {
-  const userButtonAppearance = {  
-    elements: {  
-        userButtonAvatarBox: "w-10 h-10", // Custom width and height  
-        userButtonPopoverActionButton: "text-red-600", // Custom text color for action buttons  
-    },  
-  }; 
-  
+  const { darkModeObject } = useGlobalContextProvider();
+  const { isDarkMode } = darkModeObject;
+  const userButtonAppearance = {
+    elements: {
+      userButtonAvatarBox: "w-10 h-10", // Custom width and height  
+      userButtonPopoverActionButton: "text-red-600", // Custom text color for action buttons  
+    },
+  };
+
   return (
-    <div className="bg-white p-5 rounded-md flex justify-between ">
-        <div className="flex gap-4">  
-          <div className="max-lg:flex hidden">  
-              <UserButton appearance={userButtonAppearance} />  
-          </div>  
-        </div>  
+    <div
+      style={{
+                backgroundColor: isDarkMode
+                  ? darkModeColor.background
+                  : defaultColor.default,
+              }}
+        className=" p-5 rounded-md flex justify-between ">
+      <div className="flex gap-4">
+        <div className="max-lg:flex hidden">
+          <UserButton appearance={userButtonAppearance} />
+        </div>
+      </div>
 
 
       <div className="flex flex-col max-md:hidden ">
@@ -32,14 +42,14 @@ function AllHabitsTopBar() {
         </span>
       </div>
 
-      <div className="w-[50%] max-md:w-[80%] flex gap-3 justify-between">  
-        <AllHabitsSearchBar />  
-        <DarkMode />  
-        <FontAwesomeIcon  
-          className="2 max-xl:flex hidden mt-[15px] cursor-pointer"  
-          icon={faBars}  
-    />  
-</div> 
+      <div className="w-[50%] max-md:w-[80%] flex gap-3 justify-between">
+        <AllHabitsSearchBar />
+        <DarkMode />
+        <FontAwesomeIcon
+          className="2 max-xl:flex hidden mt-[15px] cursor-pointer"
+          icon={faBars}
+        />
+      </div>
     </div>
   );
 }

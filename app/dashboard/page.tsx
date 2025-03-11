@@ -1,22 +1,22 @@
 "use client";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import Sidebar from "../Components/SideBar/SideBar";
-import { useGlobalContextProvider } from "@/Types/contextApi";
 import { menuItemType } from "@/Types/MenuItemTypes";
 import Areas from "../Pages/Areas/Areas";
 import AllHabits from "../Pages/AllHabits/AllHabits";
 import Statistics from "../Pages/Statistics/Statistics";
-import { useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { defaultColor, darkModeColor } from "@/colors";
 
 function Dashboard(){
-    const { menuItemsObject } = useGlobalContextProvider();
+    const { menuItemsObject, darkModeObject } = useGlobalContextProvider();
     const { menuItems } = menuItemsObject;
     const [selectedMenu, setSelectedMenu] = useState<menuItemType | null>(null);
     let selectComponent = null;
+    const { isDarkMode } = darkModeObject;
 
     useEffect(() => {
         menuItems.map((singleItem) => {
@@ -40,7 +40,14 @@ function Dashboard(){
             break;
     }
     return (
-        <div className="flex bg-slate-50">
+        <div 
+            style={{
+                backgroundColor: isDarkMode
+                ? darkModeColor.backgroundSlate
+                : defaultColor.backgroundSlate,
+            }}
+            className="flex "
+        >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Sidebar />
                 {selectComponent}

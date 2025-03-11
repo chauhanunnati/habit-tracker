@@ -1,5 +1,7 @@
 import React from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { defaultColor, darkModeColor } from "@/colors";
 
 function UserProfile() {
 

@@ -3,12 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useGlobalContextProvider } from "@/Types/contextApi";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-
-type DarkModeItem = {
-  id: number;
-  icon: IconProp;
-  isSelected: boolean;
-};
+import { darkModeColor, defaultColor } from "@/colors";
 
 function DarkMode() {
   const { darkModeObject } = useGlobalContextProvider();
@@ -38,14 +33,30 @@ function DarkMode() {
     });
   }, [darkModeItems, setDarkMode]);
 
+  console.log(darkModeItems);
+
   return (
-    <div>
+    <div
+      style={{
+          backgroundColor: isDarkMode
+            ? darkModeColor.backgroundSlate
+            : defaultColor.backgroundSlate,
+        }}
+        className=" w-[90px] relative rounded-3xl flex"
+    >
       {darkModeItems.map((singleItem, singleItemIndex) => (
         <div 
+          key={singleItemIndex}
           onClick={() => handleClickedItem(singleItemIndex)}
           className="h-full w-[45px] z-40 flex justify-center items-center"
         >
-          <FontAwesomeIcon icon={singleItem.icon} />
+          <FontAwesomeIcon 
+          className={`${
+            singleItem.isSelected ? "text-customRed" : "text-gray-300"
+          } cursor-pointer`}
+          icon={singleItem.icon}
+          width={20}
+          height={20} />
         </div>
       ))}
     </div>

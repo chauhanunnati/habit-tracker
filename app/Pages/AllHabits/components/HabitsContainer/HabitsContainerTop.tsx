@@ -1,9 +1,11 @@
+import React from "react";
 import { faCode, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconButton } from "@mui/material";
-import React from "react";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { darkModeColor, defaultColor } from "@/colors";
 
 export default function HabitsContainerTop() {
     return (

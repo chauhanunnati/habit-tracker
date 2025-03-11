@@ -1,25 +1,44 @@
 import React from "react";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { defaultColour } from "@/colors";
+import { useGlobalContextProvider } from "@/Types/contextApi";
+import { defaultColor, darkModeColor } from "@/colors";
 
 function Calendar() {
+  const { darkModeObject } = useGlobalContextProvider();
+  const { isDarkMode } = darkModeObject;
   return (
-    <div className="flex mx-4 flex-col gap-6 justify-center items-center mt-10">
-      <div className="g-state so rounded-xl p-5 pt-7">
+    <div
+      style={{
+        backgroundColor: isDarkMode
+          ? darkModeColor.backgroundSlate
+          : defaultColor.backgroundSlate,
+      }}
+      className="flex mx-4 flex-col gap-6 justify-center items-center mt-10 
+      bg-state-50 rounded-xl p-5 pt-7">
+
         <DateCalendar
           sx={{
             "& .MuiPickersDay-root": {
-              "&.Mui-selected": {
-                backgroundColor: defaultColour.default,
+              color: isDarkMode 
+              ? darkModeColor.textColor 
+              : defaultColor.textColor,
+              "& .Mui-selected": {
+                backgroundColor: defaultColor.default,
+                color: "white",
               },
             },
-            "& .MuiPickersYear-yearButton.Mui-selected": {
-              backgroundColor: defaultColour.default,
+            "& .MuiPickersYear-yearButton":{
+              color: isDarkMode 
+              ? darkModeColor.textColor
+              : defaultColor.textColor,
+            "&.Mui-selected" : {
+              backgroundColor: defaultColor.default,
+              color: "white",
             },
-          }}
+          },
+        }}
         />
       </div>
-    </div>
   );
 }
 
