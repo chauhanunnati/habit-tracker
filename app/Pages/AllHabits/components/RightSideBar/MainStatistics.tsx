@@ -1,6 +1,6 @@
 import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
-import { defaultColour } from "@/colors";
+import { defaultColor } from "@/colors";
 
 function MainStatistics() {
     const statisticsInfo = [
@@ -52,7 +52,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         { name: "Remaining", value: 100 - progress },  
     ];  
 
-    const COLORS = [defaultColour.default, "#edf2f4"];  
+    const COLORS = [defaultColor.default, "#edf2f4"];  
 
     return (  
         <PieChart  

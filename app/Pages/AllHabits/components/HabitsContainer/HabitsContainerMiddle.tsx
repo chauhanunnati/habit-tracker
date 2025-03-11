@@ -1,7 +1,7 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Checkbox } from "@mui/material";
-import { defaultColour } from "@/colors";
+import { defaultColor } from "@/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode } from "@fortawesome/free-solid-svg-icons";
@@ -25,9 +25,9 @@ function HabitCard() {
                 icon={<RadioButtonUncheckedIcon />}
                 checkedIcon={<CheckCircleIcon />}
                 sx={{
-                    color: defaultColour,
+                    color: defaultColor,
                     "&.Mui-checked": {
-                        color: defaultColour,
+                        color: defaultColor,
                     },
                 }}
             />
@@ -49,14 +49,14 @@ function HabitCard() {
                     {/* Divs for the areas */}
                     <div className="flex gap-2 mt-2">
                         <div 
-                            style={{ backgroundColor: defaultColour[100] }}
+                            style={{ backgroundColor: defaultColor[100] }}
                             className="p-1 text-white text-[12px] rounded-md px-2"
                         >
                             <span className="text-customRed">Area1</span>
                         </div>
             
                         <div 
-                            style={{ backgroundColor: defaultColour[100] }}
+                            style={{ backgroundColor: defaultColor[100] }}
                             className="p-1 text-white text-[12px] rounded-md px-2"
                         >
                             <span className="text-customRed">Area1</span>

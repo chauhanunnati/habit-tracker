@@ -1,6 +1,6 @@
 import React from "react";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { defaultColour } from "@/colors";
+import { defaultColor } from "@/colors";
 
 function Calendar() {
   return (
@@ -10,11 +10,11 @@ function Calendar() {
           sx={{
             "& .MuiPickersDay-root": {
               "&.Mui-selected": {
-                backgroundColor: defaultColour.default,
+                backgroundColor: defaultColor.default,
               },
             },
             "& .MuiPickersYear-yearButton.Mui-selected": {
-              backgroundColor: defaultColour.default,
+              backgroundColor: defaultColor.default,
             },
           }}
         />

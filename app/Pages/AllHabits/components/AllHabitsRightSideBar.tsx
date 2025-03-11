@@ -1,5 +1,5 @@
 import React from "react";
-import { defaultColour } from "@/colors";
+import { defaultColor } from "@/colors";
 
 import UserProfile from "./RightSideBar/UserProfile";
 import MainStatistics from "./RightSideBar/MainStatistics";
