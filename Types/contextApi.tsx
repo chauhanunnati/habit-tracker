@@ -1,18 +1,19 @@
 "use client";
 
 import { ReactNode, createContext, useState, useContext } from "react";
-
 import { GlobalContextType } from "./GlobalContextTypes";
 import { menuItemType } from "./MenuItemTypes";
 import { faRectangleList } from "@fortawesome/free-regular-svg-icons";
 import { faChartSimple, faLayerGroup, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { DarkModeItem } from "./DarkModeTypes";
 
 export type DarkModeItemType = {
   id: number;
   icon: IconProp;
   isSelected: boolean;
 };
+
 
 const GlobalContext = createContext<GlobalContextType>({
   menuItemsObject: {
@@ -29,6 +30,10 @@ const GlobalContext = createContext<GlobalContextType>({
     darkModeItems: [],
     setDarkModeItems: () => {},
   },
+  habitWindowObject: {
+    openHabitWindow: false,
+    setOpenHabitWindow: () => {},
+  },
 });
 
 function GlobalContextProvider({ children }: { children: ReactNode }) {
@@ -38,19 +43,30 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
     { name: "Areas", isSelected: false, icon: faLayerGroup },
   ]);
 
-  const [openSideBar, setOpenSideBar] = useState(false);
-  const [isDarkMode, setDarkMode] = useState<boolean>(false);
   const [darkModeItems, setDarkModeItems] = useState<DarkModeItemType[]>([
     { id: 1, icon: faSun, isSelected: true },
     { id: 2, icon: faMoon, isSelected: false },
   ]);
+
+  const [openSideBar, setOpenSideBar] = useState(false);
+  const [isDarkMode, setDarkMode] = useState<boolean>(false);
+  const [openHabitWindow, setOpenHabitWindow] = useState<boolean>(false);
 
   return (
     <GlobalContext.Provider
       value={{
         menuItemsObject: { menuItems, setMenuItems },
         openSideBarObject: { openSideBar, setOpenSideBar },
-        darkModeObject: { isDarkMode, setDarkMode, darkModeItems, setDarkModeItems },
+        darkModeObject: { 
+          isDarkMode, 
+          setDarkMode, 
+          darkModeItems, 
+          setDarkModeItems,
+        },
+        habitWindowObject: { 
+          openHabitWindow, 
+          setOpenHabitWindow, 
+        },
       }}
     >
       {children}
