@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useRef, useState, useEffect } from "react";
 import IconsWindow   from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-//import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 type FrequencyType = {
   type: string;
@@ -43,6 +43,7 @@ function HabitWindow() {
         name: "",
         icon: faChevronDown,
         frequency: [{ type: "Daily", days: ["M"], number: 1 }],
+        notificationTime: "",
     });
     
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
@@ -66,6 +67,7 @@ function HabitWindow() {
       const filterIsSelected = repeatOptions.filter(
           (singleOption) => singleOption.isSelected
       );
+
       // We extract only the name of the object
       const nameOfSelectedOption = filterIsSelected[0].name;
   
@@ -104,6 +106,19 @@ function HabitWindow() {
     setHabitItem(copyHabitsItem);
 
   }
+
+  // This callback function will update the notification property selected from the TimerPicker window
+function updateReminderTime(timeValue: string) {
+  // We create a shallow copy of the habit Item
+  const copyHabitsItem = { ...habitItem };
+
+  // Update the notification Time property
+  copyHabitsItem.notificationTime = timeValue;
+
+  // Update the Habit Item to update the UI
+  setHabitItem(copyHabitsItem);
+}
+
   //---------------------------------------------------------------------------------
   // Use Effect Hooks
   //---------------------------------------------------------------------------------
@@ -123,6 +138,7 @@ function HabitWindow() {
             className={` top-[3%] left-1/2 transform -translate-x-1/2 w-[80%] z-50 p-10 
                 rounded-md shadow-md ${openHabitWindow ? "absolute" : "hidden"}` }
         >
+          <TimerPicker onSaveTime={updateReminderTime} />
             <IconsWindow
               openIconWindow={openIconWindow}
               setOpenIconWindow={setOpenIconWindow}
@@ -439,6 +455,78 @@ function WeeklyOption({
       </div>
     );
   }
+  
+  function Reminder() {
+    const { darkModeObject, openTimePickerWindowObject }= useGlobalContextProvider();
+    const setOpenTimePickerWindowObject = openTimePickerWindowObject;
+
+    const darkMode = darkModeObject;
+    const [isOn, setIsOn] = useState(false);
+  
+    function updateToggle() {
+      setIsOn(!isOn);
+    }
+    
+    function openTheTimerPicker(){
+      setOpenTimePickerWindowObject(true);
+    }
+  
+    return (
+      <div className="flex-col gap-2 mt-10 px-3">
+        <div className="flex justify-between">
+          <span className="font-semibold text-[17px]">Daily Notification</span>
+          <ToggleSwitch/>
+        </div>
+        {isOn && (
+          <div
+            style={{
+              backgroundColor: !darkMode ? defaultColor[100] : defaultColor[50],
+              color: darkMode ? defaultColor.default :  darkModeColor.textColor,
+            }}
+            className="flex justify-between p-4 m-2 mt-8 rounded-md"
+          >
+            <span>Select Time</span>
+            <div
+              onClick={openTheTimerPicker} 
+              className="flex gap-2 items-center justify-center cursor-pointer select-none"
+              >
+              <span>08:00 AM</span>
+              <FontAwesomeIcon
+                height={12}
+                width={12}
+                icon={faChevronDown}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    );
+    function ToggleSwitch() {
+      return (
+        <div
+          className={`${
+            isOn ? "bg-customRed" : "bg-slate-400"
+          } w-16 h-[30px] relative rounded-lg flex`}
+        >
+          <div
+            onClick={updateToggle}
+            className="w-1/2 h-full"
+          />
+          <div
+            onClick={updateToggle}
+            className="w-1/2 h-full"
+          />
+          <div
+            className={`bg-white h-6 w-6 rounded-full ${
+              isOn ? "right" : "left"
+            } [-3px] top-[-3px] absolute`}
+          />
+        </div>
+      );
+    }
+
+  }
+  
 
   function SaveButton({ habit }: { habit: HabitType }) {
   return (

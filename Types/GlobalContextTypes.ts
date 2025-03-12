@@ -21,4 +21,8 @@ export type GlobalContextType = {
     openHabitWindow: boolean;
     setOpenHabitWindow: Dispatch<SetStateAction<boolean>>;
   };
+  openTimePickerWindowObject: {
+    openTimePickerWindow: boolean;
+    setOpenTimePickerWindow: Dispatch<SetStateAction<boolean>>;
+  };
 };
