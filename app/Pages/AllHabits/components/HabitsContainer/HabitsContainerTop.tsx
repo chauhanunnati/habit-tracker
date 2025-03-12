@@ -8,6 +8,8 @@ import { useGlobalContextProvider } from "@/Types/contextApi";
 import { darkModeColor, defaultColor } from "@/colors";
 
 export default function HabitsContainerTop() {
+    const { habitWindowObject } = useGlobalContextProvider();
+    const { setOpenHabitWindow } = habitWindowObject;
     return (
         <div className="p-3 flex justify-between items-center">
             <div className="flex gap-4 items-center">
@@ -26,7 +28,9 @@ export default function HabitsContainerTop() {
                 </div>
             </div>
 
-            <button className="flex gap-2 items-center bg-customRed p-3 text-white rounded-md text-sm">
+            <button className="flex gap-2 items-center bg-customRed p-3 text-white rounded-md text-sm"
+                onClick={() => setOpenHabitWindow(true)}
+            > 
                 <FontAwesomeIcon icon={faPlus} />
                 <span>New Habit</span>
             </button>

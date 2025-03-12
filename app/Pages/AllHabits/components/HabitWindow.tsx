@@ -5,7 +5,10 @@ import { faArrowAltCircleDown } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useRef, useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import IconsWindow   from "./IconsWindow/IconsWindow";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+//import { v4 as uuidv4 } from "uuid";
+
 
 type HabitType = {
     _id: string;
@@ -23,6 +26,7 @@ function HabitWindow() {
         _id: "",
         name: "",
     });
+    const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
 
     const onUpdateHabitName = (inputText: string) => {
     //Creating a shallow copy of the habitItem object
@@ -42,10 +46,16 @@ function HabitWindow() {
             className={` top-[3%] left-1/2 transform -translate-x-1/2 w-[80%] z-50 p-10 
                 rounded-md shadow-md ${openHabitWindow ? "absolute" : "hidden"}` }
         >
-            <HeaderMemo />
-            <InputNameAndIconButtonMemo
+            <IconsWindow
+              openIconWindow={openIconWindow}
+              setOpenIconWindow={setOpenIconWindow}
+            />
+          
+            <Header/>
+            <InputNameAndIconButton
                 onUpdateHabitName={onUpdateHabitName}
                 habitName={habitItem.name}
+                setOpenIconWindow={setOpenIconWindow}
             />
             <SaveButton habit={habitItem}/>
         </div>
@@ -73,9 +83,11 @@ function Header() {
 function InputNameAndIconButton({
     onUpdateHabitName,
     habitName,
+    setOpenIconWindow,
   }: {
     onUpdateHabitName: (inputText: string) => void;
     habitName: string;
+    setOpenIconWindow: React.Dispatch<React.SetStateAction<boolean>>;
   }) {
     const inputRef = useRef<HTMLInputElement>(null);
     const { habitWindowObject, darkModeObject } = useGlobalContextProvider();
@@ -112,6 +124,7 @@ function InputNameAndIconButton({
             placeholder="Type a name for the habit..."
           />
           <FontAwesomeIcon
+            onClick={() => setOpenIconWindow(true)}
             className="bg-mainColor mt-[1px] p-4 rounded-md text-white cursor-pointer bg-customRed"
             icon={faClose}
             height={16}

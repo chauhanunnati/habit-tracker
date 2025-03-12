@@ -51,6 +51,7 @@ function Dashboard(){
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Sidebar />
                 {selectComponent}
+                <BlackSoftLayer />
             </LocalizationProvider>
         </div>
     );
