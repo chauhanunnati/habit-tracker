@@ -9,12 +9,25 @@ import IconsWindow   from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 //import { v4 as uuidv4 } from "uuid";
 
-
+type FrequencyType = {
+  type: string;
+  days: string[];
+}
 type HabitType = {
     _id: string;
     name: string;
     icon: IconProp;
+    frequency: FrequencyType[];
 };
+type RepeatOption = {
+  name: string;
+  isSelected: boolean;
+}
+type DayOption = {
+  id: number;
+  name: string;
+  isSelected: boolean;
+}
 
 const HeaderMemo = memo(Header)
 const InputNameAndIconButtonMemo = memo(InputNameAndIconButton);
@@ -23,13 +36,20 @@ function HabitWindow() {
     const { habitWindowObject, darkModeObject } = useGlobalContextProvider();
     const { openHabitWindow } = habitWindowObject;
     const { isDarkMode } = darkModeObject;
+
     const [habitItem, setHabitItem] = useState<HabitType>({
         _id: "",
         name: "",
-        icon: faQuestion,
+        icon: faChevronDown,
+        frequency: [{ type: "Daily", days: ["M"] }],
     });
+    
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
     const [iconSelected, setIconSelected] = useState<IconProp>(habitItem.icon);
+
+  //---------------------------------------------------------------------------------
+  //Functions
+  //---------------------------------------------------------------------------------
 
     const onUpdateHabitName = (inputText: string) => {
     //Creating a shallow copy of the habitItem object
@@ -39,7 +59,43 @@ function HabitWindow() {
     //Updating the habitItem object
     setHabitItem(copyHabitItem);
     };
-    
+
+    function changeRepeatOption(repeatOptions: RepeatOption[]) {
+      // First, we filter only the element we selected
+      const filterIsSelected = repeatOptions.filter(
+          (singleOption) => singleOption.isSelected
+      );
+      // We extract only the name of the object
+      const nameOfSelectedOption = filterIsSelected[0].name;
+  
+      // We create a shallow copy of the habit item
+      const copyHabitsItem = { ...habitItem };
+  
+      // Update the type of the frequency property
+      copyHabitsItem.frequency[0].type = nameOfSelectedOption;
+  
+      // Update the habit item to update the UI
+      setHabitItem(copyHabitsItem);
+  }
+  
+  function changeDaysOption(allDays: DayOption[]) {
+    const selectedDays = allDays
+        .filter((singleDay) => singleDay.isSelected)
+        .map((day) => day.name);
+
+    // Create a shallow copy of the habit item
+    const copyHabitsItem = { ...habitItem };
+
+    // Update the type of the frequency property
+    copyHabitsItem.frequency[0].days = selectedDays;
+
+    // Update the Habit Item to reflect changes in UI
+    setHabitItem(copyHabitsItem);
+}
+  //---------------------------------------------------------------------------------
+  // Use Effect Hooks
+  //---------------------------------------------------------------------------------
+
     // Update the icon property of the habitItem every time the icon selected is changed
     useEffect(() => {
       setHabitItem(prev => ({ ...prev, icon: iconSelected }));
@@ -68,6 +124,10 @@ function HabitWindow() {
                 habitName={habitItem.name}
                 setOpenIconWindow={setOpenIconWindow}
                 iconSelected={iconSelected}
+            />
+            <Repeat 
+              onChangeOption={changeRepeatOption} 
+              onChangeDaysOption={changeDaysOption} 
             />
             <SaveButton habit={habitItem}/>
         </div>
@@ -152,18 +212,212 @@ function InputNameAndIconButton({
       </div>
     );
   }
+
+function Repeat({
+  onChangeOption,
+  onChangeDaysOption,
+}: {
+  onChangeOption: (repeatOptions: RepeatOption[]) => void;
+ onChangeDaysOption: (allDays: DayOption[]) => void;
+}) {
+  const [repeatOptions, setRepeatOptions] = useState<RepeatOption[]>([
+      { name: "Daily", isSelected: true },
+      { name: "Weekly", isSelected: false },
+  ]);
+
+  const days: DayOption[] = [
+    { id: 1, name: "M", isSelected: true },
+    { id: 2, name: "T", isSelected: false },
+    { id: 3, name: "W", isSelected: false },
+    { id: 4, name: "T", isSelected: false },
+    { id: 5, name: "F", isSelected: false },
+    { id: 6, name: "S", isSelected: false },
+    { id: 7, name: "S", isSelected: false },
+  ];
+
+  const [allDays, setAllDays] = useState<DayOption[]>(days);
+  const [weeks, setweeks] = useState(1);
+  const { darkModeObject } = useGlobalContextProvider();
+  const { isDarkMode } = darkModeObject;
+
+  function changeOption(indexClicked: number) {
+      const updateRepeatOptions = repeatOptions.map((singleOption, index) => {
+          if (index === indexClicked) {
+              return { ...singleOption, isSelected: true };
+          }
+          return { ...singleOption, isSelected: false };
+      });
+
+      setRepeatOptions(updateRepeatOptions);
+      onChangeOption(updateRepeatOptions);
+  }
+
+  useEffect(() =>{
+    onChangeDaysOption(allDays);
+  }, [allDays]); 
+
+  return (
+      <div className="flex flex-col gap-2 mt-10 px-3">
+          <span className="font-semibold text-[17px] ">Repeat</span>
+
+          <div className="flex gap-4 mt-2 items-center">
+              {repeatOptions.map((singleOption, index) => (
+                  <button
+                      key={index}
+                      onClick={() => changeOption(index)}
+                      style={{
+                          color: !singleOption.isSelected
+                              ? !isDarkMode
+                                  ? defaultColor.default
+                                  : darkModeColor.textColor
+                              : "",
+                          backgroundColor: singleOption.isSelected
+                              ? defaultColor.default
+                              : !isDarkMode
+                                  ? defaultColor[100]
+                                  : defaultColor[50]
+                      }}
+                      className="p-2 px-3 rounded-md text-white cursor-pointer "
+                  >
+                      {singleOption.name}
+                  </button>
+              ))}
+          </div>
+          <DailyOptions allDays={allDays} setAllDays={setAllDays} />
+      </div>
+  );
+}
+
+function DailyOptions({ 
+  allDays,
+  setAllDays
+}: {
+  allDays: DayOption[]; 
+  setAllDays: React.Dispatch<React.SetStateAction<DayOption[]>>; 
+}) {
+  const { darkModeObject } = useGlobalContextProvider();
+  const { isDarkMode } = darkModeObject;
+
+  function selectedDays(singleDayIndex: number) {
+      const selectedCount: number = allDays.filter(
+        (singleDay) => singleDay.isSelected
+      ).length;
+
+      const updatedAllDays = allDays.map((singleDay, index) => {
+          if (
+            selectedCount === 1 && 
+            singleDay.isSelected === true && 
+            index === singleDayIndex
+          ) {
+            return singleDay;
+          }
+          return index === singleDayIndex 
+          ? { ...singleDay, isSelected: !singleDay.isSelected } 
+          : singleDay;
+      });
+
+      setAllDays(updatedAllDays);
+  }
+  return (
+      <div className="mt-5 flex flex-col gap-4">
+          <span className="font-medium opacity-85">On These Days</span>
+          <div className="flex gap-3 w-full">
+              {allDays.map((singleDay, singleDayIndex) => (
+                  <span
+                      key={singleDayIndex}
+                      onClick={() => selectedDays(singleDayIndex)}
+                      style={{
+                          color: singleDay.isSelected
+                              ? isDarkMode
+                                  ? darkModeColor.textColor
+                                  : defaultColor.default
+                              : "",
+                          backgroundColor: singleDay.isSelected
+                              ? isDarkMode
+                                  ? defaultColor[100]
+                                  : defaultColor[50]
+                              : defaultColor.default,
+                      }}
+                      className={`p-2 px-3 w-11 text-center rounded-md select-none cursor-pointer ${
+                          singleDay.isSelected ? "text-white" : "text-gray-400"
+                      }`}
+                  >
+                      {singleDay.name}
+                  </span>
+              ))}
+          </div>
+      </div>
+  );
+  }
   
-function SaveButton({ habit }: { habit: HabitType }) {
+function WeeklyOption({
+    weeks,
+    setWeek,
+  }: {
+    weeks: number;
+    setWeek: React.Dispatch<React.SetStateAction<number>>;
+  }) {
+    const { darkModeObject } = useGlobalContextProvider();
+    const { isDarkMode } = darkModeObject;
+  
+    function updateCounter(option: string) {
+      if (option === "up") {
+        setWeek((prev) => (prev < 7 ? prev + 1 : 7));
+      }
+  
+      if (option === "down") {
+        setWeek((prev) => (prev > 1 ? prev - 1 : 1));
+      }
+    }
+  
     return (
-        <div className="w-full flex justify-center mt-9">
-            <button
-                onClick={()=> {
-                console.log(habit);
-                }}
-                className=" bg-customRed p-4 w-[98%] rounded-md text-white "
-            >
-                Add a Habit
-            </button>
+      <div className="mt-7 flex gap-20">
+        <div className="flex-col gap-2">
+          <span className="font-semibold">Frequency</span>
+          <span className="text-sm font-light text-gray-400">
+            {weeks} times a week
+          </span>
         </div>
+  
+        <div className="flex items-center justify-center">
+          <button
+            onClick={() => updateCounter("down")}
+            style={{
+              backgroundColor: isDarkMode ? defaultColor[100] : defaultColor[50],
+              color: isDarkMode ? defaultColor.default : darkModeColor.textColor,
+            }}
+            className="p-3 w-10 rounded-md text-white"
+          >
+            -
+          </button>
+  
+          <span className="p-4 px-5 select-none">{weeks}</span>
+          <button
+            onClick={() => updateCounter("up")}
+            style={{
+              backgroundColor: isDarkMode ? defaultColor[100] : defaultColor[50],
+              color: isDarkMode ? defaultColor.default : darkModeColor.textColor,
+            }}
+            className="p-3 w-10 rounded-md text-white"
+          >
+            +
+          </button>
+        </div>
+      </div>
     );
+  }
+
+  function SaveButton({ habit }: { habit: HabitType }) {
+  return (
+      <div className="w-full flex justify-center mt-9">
+          <button
+              onClick={()=> {
+              console.log(habit);
+              }}
+              className=" bg-customRed p-4 w-[98%] rounded-md text-white "
+          >
+              Add a Habit
+          </button>
+      </div>
+  );
 }
