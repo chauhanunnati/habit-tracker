@@ -25,4 +25,8 @@ export type GlobalContextType = {
     openTimePickerWindow: boolean;
     setOpenTimePickerWindow: Dispatch<SetStateAction<boolean>>;
   };
+  // allAreasObject: {
+  //   allAreas: AreaType[],
+  //   setAllAreas: Dispatch<SetStateAction<AreaType[]>>;
+  // };
 };

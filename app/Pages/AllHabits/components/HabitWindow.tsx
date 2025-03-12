@@ -5,8 +5,9 @@ import { faArrowAltCircleDown } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown, faClose, faPersonCircleQuestion, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useRef, useState, useEffect } from "react";
-import IconsWindow   from "./IconsWindow/IconsWindow";
+import IconsWindow from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import TimerPicker from "@/app/Pages/AllHabits/components/TimerPicker";
 import { v4 as uuidv4 } from "uuid";
 
 type FrequencyType = {
@@ -19,6 +20,8 @@ type HabitType = {
     name: string;
     icon: IconProp;
     frequency: FrequencyType[];
+    notificationTime: string;
+    isNotificationOn: boolean;
 };
 type RepeatOption = {
   name: string;
@@ -34,16 +37,18 @@ const HeaderMemo = memo(Header)
 const InputNameAndIconButtonMemo = memo(InputNameAndIconButton);
 
 function HabitWindow() {
-    const { habitWindowObject, darkModeObject } = useGlobalContextProvider();
-    const { openHabitWindow } = habitWindowObject;
+    const { habitWindowObject, darkModeObject, openTimePickerWindowObject } = useGlobalContextProvider();
+    const { openHabitWindow, setOpenHabitWindow } = habitWindowObject;
     const { isDarkMode } = darkModeObject;
+    const { openTimePickerWindow, setOpenTimePickerWindow } = openTimePickerWindowObject;
 
     const [habitItem, setHabitItem] = useState<HabitType>({
-        _id: "",
+        _id: uuidv4(),
         name: "",
         icon: faChevronDown,
         frequency: [{ type: "Daily", days: ["M"], number: 1 }],
         notificationTime: "",
+        isNotificationOn: false,
     });
     
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
@@ -104,20 +109,19 @@ function HabitWindow() {
 
     // Update the Habit Item to reflect changes in UI
     setHabitItem(copyHabitsItem);
-
   }
 
   // This callback function will update the notification property selected from the TimerPicker window
-function updateReminderTime(timeValue: string) {
-  // We create a shallow copy of the habit Item
-  const copyHabitsItem = { ...habitItem };
+  function updateReminderTime(timeValue: string) {
+    // We create a shallow copy of the habit Item
+    const copyHabitsItem = { ...habitItem };
 
-  // Update the notification Time property
-  copyHabitsItem.notificationTime = timeValue;
+    // Update the notification Time property
+    copyHabitsItem.notificationTime = timeValue;
 
-  // Update the Habit Item to update the UI
-  setHabitItem(copyHabitsItem);
-}
+    // Update the Habit Item to update the UI
+    setHabitItem(copyHabitsItem);
+  }
 
   //---------------------------------------------------------------------------------
   // Use Effect Hooks
@@ -146,8 +150,8 @@ function updateReminderTime(timeValue: string) {
               setIconSelected={setIconSelected}
             />
           
-            <Header/>
-            <InputNameAndIconButton
+            <HeaderMemo />
+            <InputNameAndIconButtonMemo
                 onUpdateHabitName={onUpdateHabitName}
                 habitName={habitItem.name}
                 setOpenIconWindow={setOpenIconWindow}
@@ -158,7 +162,8 @@ function updateReminderTime(timeValue: string) {
               onChangeDaysOption={changeDaysOption} 
               onChangeWeeksOption={changeWeeksOption}
             />
-            <SaveButton habit={habitItem}/>
+            <Reminder habitItem={habitItem} setHabitItem={setHabitItem} />
+            <SaveButton habit={habitItem} setOpenHabitWindow={setOpenHabitWindow} />
         </div>
     );
 }
@@ -227,13 +232,13 @@ function InputNameAndIconButton({
             ref={inputRef}
             value={habitName}
             onChange={(event) => updateInputHabit(event)}
-            className={`"border w-full border-gray-200 outline-none p-4 rounded-md text-[13px] `}
+            className={`border w-full border-gray-200 outline-none p-4 rounded-md text-[13px]`}
             placeholder="Type a name for the habit..."
           />
           <FontAwesomeIcon
             onClick={() => setOpenIconWindow(true)}
             className="bg-mainColor mt-[1px] p-4 rounded-md text-white cursor-pointer bg-customRed"
-            icon={faClose}
+            icon={iconSelected}
             height={16}
             width={20}
           />
@@ -331,7 +336,7 @@ function Repeat({
           {nameOfSelectedOption === "Daily" ? (
             <DailyOptions allDays={allDays} setAllDays={setAllDays} />
           ) : (
-            <WeeklyOption weeks ={weeks} setWeek={setweeks} />
+            <WeeklyOption weeks={weeks} setWeek={setweeks} />
           )}
       </div>
   );
@@ -456,89 +461,105 @@ function WeeklyOption({
     );
   }
   
-  function Reminder() {
-    const { darkModeObject, openTimePickerWindowObject }= useGlobalContextProvider();
-    const setOpenTimePickerWindowObject = openTimePickerWindowObject;
+function Reminder({
+  habitItem,
+  setHabitItem,
+}: {
+  habitItem: HabitType;
+  setHabitItem: React.Dispatch<React.SetStateAction<HabitType>>;
+}) {
+  const { darkModeObject, openTimePickerWindowObject } = useGlobalContextProvider();
+  const { setOpenTimePickerWindow } = openTimePickerWindowObject;
+  const { isDarkMode } = darkModeObject;
+  const [isOn, setIsOn] = useState(false);
 
-    const darkMode = darkModeObject;
-    const [isOn, setIsOn] = useState(false);
-  
-    function updateToggle() {
-      setIsOn(!isOn);
-    }
-    
-    function openTheTimerPicker(){
-      setOpenTimePickerWindowObject(true);
-    }
-  
-    return (
-      <div className="flex-col gap-2 mt-10 px-3">
-        <div className="flex justify-between">
-          <span className="font-semibold text-[17px]">Daily Notification</span>
-          <ToggleSwitch/>
-        </div>
-        {isOn && (
+  function updateToggle() {
+    const copyHabitItem = {...habitItem};
+    copyHabitItem.isNotificationOn = !isOn;
+    setHabitItem(copyHabitItem);
+    setIsOn(!isOn);
+  }
+
+  function openTheTimerPicker() {
+    setOpenTimePickerWindow(true);
+  }
+
+  return (
+    <div className="flex-col gap-2 mt-10 px-3">
+      <div className="flex justify-between">
+        <span className="font-semibold text-[17px]">Daily Notification</span>
+        <ToggleSwitch />
+      </div>
+      {isOn && (
+        <div
+          style={{
+            backgroundColor: !isDarkMode ? defaultColor[100] : defaultColor[50],
+            color: isDarkMode ? defaultColor.default : darkModeColor.textColor,
+          }}
+          className="flex justify-between p-4 m-2 mt-8 rounded-md"
+        >
+          <span>Select Time</span>
           <div
-            style={{
-              backgroundColor: !darkMode ? defaultColor[100] : defaultColor[50],
-              color: darkMode ? defaultColor.default :  darkModeColor.textColor,
-            }}
-            className="flex justify-between p-4 m-2 mt-8 rounded-md"
+            onClick={openTheTimerPicker} 
+            className="flex gap-2 items-center justify-center cursor-pointer select-none"
           >
-            <span>Select Time</span>
-            <div
-              onClick={openTheTimerPicker} 
-              className="flex gap-2 items-center justify-center cursor-pointer select-none"
-              >
-              <span>08:00 AM</span>
-              <FontAwesomeIcon
-                height={12}
-                width={12}
-                icon={faChevronDown}
-              />
-            </div>
+            <span>{habitItem.notificationTime || "08:00 AM"}</span>
+            <FontAwesomeIcon
+              height={12}
+              width={12}
+              icon={faChevronDown}
+            />
           </div>
-        )}
+        </div>
+      )}
+    </div>
+  );
+
+  function ToggleSwitch() {
+    return (
+      <div
+        className={`${
+          isOn ? "bg-customRed" : "bg-slate-400"
+        } w-16 h-[30px] relative rounded-lg flex`}
+      >
+        <div
+          onClick={updateToggle}
+          className="w-1/2 h-full"
+        />
+        <div
+          onClick={updateToggle}
+          className="w-1/2 h-full"
+        />
+        <div
+          className={`bg-white h-6 w-6 rounded-full absolute ${
+            isOn ? "right-[-3px]" : "left-[-3px]"
+          } top-[-3px]`}
+        />
       </div>
     );
-    function ToggleSwitch() {
-      return (
-        <div
-          className={`${
-            isOn ? "bg-customRed" : "bg-slate-400"
-          } w-16 h-[30px] relative rounded-lg flex`}
-        >
-          <div
-            onClick={updateToggle}
-            className="w-1/2 h-full"
-          />
-          <div
-            onClick={updateToggle}
-            className="w-1/2 h-full"
-          />
-          <div
-            className={`bg-white h-6 w-6 rounded-full ${
-              isOn ? "right" : "left"
-            } [-3px] top-[-3px] absolute`}
-          />
-        </div>
-      );
-    }
-
   }
-  
+}
 
-  function SaveButton({ habit }: { habit: HabitType }) {
+function SaveButton({ 
+  habit,
+  setOpenHabitWindow
+}: { 
+  habit: HabitType;
+  setOpenHabitWindow: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const handleSave = () => {
+    console.log(habit);
+    setOpenHabitWindow(false);
+  };
+
   return (
-      <div className="w-full flex justify-center mt-9">
-          <button
-              onClick={()=> {
-              console.log(habit);
-              }}
-              className=" bg-customRed p-4 w-[98%] rounded-md text-white "
-          >
-              Add a Habit
-          </button>
-      </div>
+    <div className="w-full flex justify-center mt-9">
+      <button
+        onClick={handleSave}
+        className="bg-customRed p-4 w-[98%] rounded-md text-white"
+      >
+        Add a Habit
+      </button>
+    </div>
   );
 }
