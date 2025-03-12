@@ -2,7 +2,7 @@
 import { useGlobalContextProvider } from "@/Types/contextApi";
 import { darkModeColor, defaultColor } from "@/colors";
 import { faArrowAltCircleDown } from "@fortawesome/free-regular-svg-icons";
-import { faChevronDown, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faClose, faPersonCircleQuestion, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useRef, useState, useEffect } from "react";
 import IconsWindow   from "./IconsWindow/IconsWindow";
@@ -13,6 +13,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 type HabitType = {
     _id: string;
     name: string;
+    icon: IconProp;
 };
 
 const HeaderMemo = memo(Header)
@@ -25,8 +26,10 @@ function HabitWindow() {
     const [habitItem, setHabitItem] = useState<HabitType>({
         _id: "",
         name: "",
+        icon: faQuestion,
     });
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
+    const [iconSelected, setIconSelected] = useState<IconProp>(habitItem.icon);
 
     const onUpdateHabitName = (inputText: string) => {
     //Creating a shallow copy of the habitItem object
@@ -36,6 +39,12 @@ function HabitWindow() {
     //Updating the habitItem object
     setHabitItem(copyHabitItem);
     };
+    
+    // Update the icon property of the habitItem every time the icon selected is changed
+    useEffect(() => {
+      setHabitItem(prev => ({ ...prev, icon: iconSelected }));
+    }, [iconSelected]);
+
 
     return (
         <div
@@ -49,6 +58,8 @@ function HabitWindow() {
             <IconsWindow
               openIconWindow={openIconWindow}
               setOpenIconWindow={setOpenIconWindow}
+              iconSelected={iconSelected}
+              setIconSelected={setIconSelected}
             />
           
             <Header/>
@@ -56,6 +67,7 @@ function HabitWindow() {
                 onUpdateHabitName={onUpdateHabitName}
                 habitName={habitItem.name}
                 setOpenIconWindow={setOpenIconWindow}
+                iconSelected={iconSelected}
             />
             <SaveButton habit={habitItem}/>
         </div>
@@ -84,10 +96,12 @@ function InputNameAndIconButton({
     onUpdateHabitName,
     habitName,
     setOpenIconWindow,
+    iconSelected,
   }: {
     onUpdateHabitName: (inputText: string) => void;
     habitName: string;
     setOpenIconWindow: React.Dispatch<React.SetStateAction<boolean>>;
+    iconSelected: IconProp;
   }) {
     const inputRef = useRef<HTMLInputElement>(null);
     const { habitWindowObject, darkModeObject } = useGlobalContextProvider();
@@ -108,6 +122,10 @@ function InputNameAndIconButton({
         onUpdateHabitName("");
       }
     }, [openHabitWindow]);
+
+    useEffect(() => {
+      inputRef.current?.focus();
+    }, [iconSelected]);
 
     return (
       <div className="flex flex-col gap-2 mt-10 px-3">

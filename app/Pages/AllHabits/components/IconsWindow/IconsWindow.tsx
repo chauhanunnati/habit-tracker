@@ -6,17 +6,22 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { iconsData } from "./IconData";
 import { useGlobalContextProvider } from "@/Types/contextApi";
 import { defaultColor, darkModeColor } from "@/colors";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 function IconsWindow({
     openIconWindow,
     setOpenIconWindow,
+    iconSelected,
+    setIconSelected,
 }: {
     openIconWindow: boolean;
     setOpenIconWindow: React.Dispatch<React.SetStateAction<boolean>>;
+    iconSelected: IconProp,
+    setIconSelected: React.Dispatch<React.SetStateAction<IconProp>>;
 }) {
     const [allIcons, setAllIcons] = useState(iconsData);
     const { darkModeObject } = useGlobalContextProvider();
-    const isDarkMode = darkModeObject;
+    const { isDarkMode } = darkModeObject;
 
     console.log(openIconWindow);
 
@@ -52,6 +57,10 @@ function IconsWindow({
                 height={50}
                 width={50}
                 icon={icon.faIcon}
+                onClick={() => {
+                    setIconSelected(icon.faIcon);
+                    setOpenIconWindow(false);
+                }}
             />
     ))}
     </div>
