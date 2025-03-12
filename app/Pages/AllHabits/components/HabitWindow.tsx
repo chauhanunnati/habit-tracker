@@ -12,6 +12,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 type FrequencyType = {
   type: string;
   days: string[];
+  number: number;
 }
 type HabitType = {
     _id: string;
@@ -41,7 +42,7 @@ function HabitWindow() {
         _id: "",
         name: "",
         icon: faChevronDown,
-        frequency: [{ type: "Daily", days: ["M"] }],
+        frequency: [{ type: "Daily", days: ["M"], number: 1 }],
     });
     
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
@@ -92,6 +93,17 @@ function HabitWindow() {
     // Update the Habit Item to reflect changes in UI
     setHabitItem(copyHabitsItem);
 }
+
+  function changeWeeksOption(weeks: number){
+    const copyHabitsItem = { ...habitItem };
+
+    // Update the type of the frequency property
+    copyHabitsItem.frequency[0].number = weeks;
+
+    // Update the Habit Item to reflect changes in UI
+    setHabitItem(copyHabitsItem);
+
+  }
   //---------------------------------------------------------------------------------
   // Use Effect Hooks
   //---------------------------------------------------------------------------------
@@ -128,6 +140,7 @@ function HabitWindow() {
             <Repeat 
               onChangeOption={changeRepeatOption} 
               onChangeDaysOption={changeDaysOption} 
+              onChangeWeeksOption={changeWeeksOption}
             />
             <SaveButton habit={habitItem}/>
         </div>
@@ -216,9 +229,11 @@ function InputNameAndIconButton({
 function Repeat({
   onChangeOption,
   onChangeDaysOption,
+  onChangeWeeksOption,
 }: {
   onChangeOption: (repeatOptions: RepeatOption[]) => void;
- onChangeDaysOption: (allDays: DayOption[]) => void;
+  onChangeDaysOption: (allDays: DayOption[]) => void;
+  onChangeWeeksOption:(weeks: number) => void;
 }) {
   const [repeatOptions, setRepeatOptions] = useState<RepeatOption[]>([
       { name: "Daily", isSelected: true },
@@ -239,6 +254,7 @@ function Repeat({
   const [weeks, setweeks] = useState(1);
   const { darkModeObject } = useGlobalContextProvider();
   const { isDarkMode } = darkModeObject;
+  const [nameOfSelectedOption, setNameOfSelectedOption] = useState("");
 
   function changeOption(indexClicked: number) {
       const updateRepeatOptions = repeatOptions.map((singleOption, index) => {
@@ -255,6 +271,19 @@ function Repeat({
   useEffect(() =>{
     onChangeDaysOption(allDays);
   }, [allDays]); 
+
+  useEffect(() =>{
+    onChangeWeeksOption(weeks);
+  }, [weeks]); 
+
+  
+  useEffect(() =>{
+    const getNameOptionSelected = repeatOptions.filter(
+      (singleOption) => singleOption.isSelected
+    )[0].name;
+
+    setNameOfSelectedOption(getNameOptionSelected);
+  }, [repeatOptions]); 
 
   return (
       <div className="flex flex-col gap-2 mt-10 px-3">
@@ -283,7 +312,11 @@ function Repeat({
                   </button>
               ))}
           </div>
-          <DailyOptions allDays={allDays} setAllDays={setAllDays} />
+          {nameOfSelectedOption === "Daily" ? (
+            <DailyOptions allDays={allDays} setAllDays={setAllDays} />
+          ) : (
+            <WeeklyOption weeks ={weeks} setWeek={setweeks} />
+          )}
       </div>
   );
 }
