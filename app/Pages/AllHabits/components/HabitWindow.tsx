@@ -165,6 +165,7 @@ function HabitWindow() {
               onChangeWeeksOption={changeWeeksOption}
             />
             <Reminder habitItem={habitItem} setHabitItem={setHabitItem} />
+            <HabitWindowArea onChange={getSeletedAreaTItems}/>
             <SaveButton habit={habitItem} setOpenHabitWindow={setOpenHabitWindow} />
         </div>
     );
