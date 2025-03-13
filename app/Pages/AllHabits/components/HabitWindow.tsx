@@ -9,19 +9,15 @@ import IconsWindow from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import TimerPicker from "@/app/Pages/AllHabits/components/TimerPicker";
 import { v4 as uuidv4 } from "uuid";
+import HabitWindowArea from "./HabitWindow/HabitWindowAreas";
+import { addNewHabit } from "@/utils/allHabitUtils/addNewHabit";
+import { AreaType,HabitType } from "@/Types/GlobalTypes";
+
 
 type FrequencyType = {
   type: string;
   days: string[];
   number: number;
-}
-type HabitType = {
-    _id: string;
-    name: string;
-    icon: IconProp;
-    frequency: FrequencyType[];
-    notificationTime: string;
-    isNotificationOn: boolean;
 };
 type RepeatOption = {
   name: string;
@@ -43,12 +39,13 @@ function HabitWindow() {
     const { openTimePickerWindow, setOpenTimePickerWindow } = openTimePickerWindowObject;
 
     const [habitItem, setHabitItem] = useState<HabitType>({
-        _id: uuidv4(),
+        _id: "",
         name: "",
         icon: faChevronDown,
         frequency: [{ type: "Daily", days: ["M"], number: 1 }],
         notificationTime: "",
         isNotificationOn: false,
+        areas: [],
     });
     
     const [openIconWindow, setOpenIconWindow] = useState<boolean>(false);
@@ -124,6 +121,17 @@ function HabitWindow() {
     // Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
   }
+  function setSelectedAreaItems(selectedAreaItems: AreaType[]) {
+    // We create a shallow copy of the habit item
+    const copyHabitsItem = { ...habitItem };
+
+    // Update the areas property
+    copyHabitsItem.areas = selectedAreaItems;
+    
+    // Update the Habit Item to update the UI
+    setHabitItem(copyHabitsItem);
+  }
+
 
   //---------------------------------------------------------------------------------
   // Use Effect Hooks
@@ -165,8 +173,8 @@ function HabitWindow() {
               onChangeWeeksOption={changeWeeksOption}
             />
             <Reminder habitItem={habitItem} setHabitItem={setHabitItem} />
-            <HabitWindowArea onChange={getSeletedAreaTItems}/>
-            <SaveButton habit={habitItem} setOpenHabitWindow={setOpenHabitWindow} />
+            <HabitWindowArea onChange={setSelectedAreaItems}/>
+            <SaveButton habit={habitItem} />
         </div>
     );
 }
@@ -543,22 +551,32 @@ function Reminder({
   }
 }
 
-function SaveButton({ 
-  habit,
-  setOpenHabitWindow
-}: { 
-  habit: HabitType;
-  setOpenHabitWindow: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const handleSave = () => {
-    console.log(habit);
-    setOpenHabitWindow(false);
-  };
+function SaveButton({ habit }: { habit:HabitType }) {
+  const { allHabitsObject, habitWindowObject } = useGlobalContextProvider();
+  const { allHabits, setAllHabits } = allHabitsObject;
+  const { setOpenHabitWindow } = habitWindowObject;
+
+  function checkNewHabitObject() {
+      if (habit.name.trim() === "") {
+          return console.log("The habit name field is still empty!");
+      }
+
+      const habitExist = allHabits.some(
+          (singleHabit) => singleHabit.name === habit.name
+      );
+
+      if (!habitExist) {
+          addNewHabit({ allHabits, setAllHabits, newHabit: habit });
+          setOpenHabitWindow(false);
+      } else {
+          console.log("Habit already exists!");
+      }
+  }
 
   return (
     <div className="w-full flex justify-center mt-9">
       <button
-        onClick={handleSave}
+        onClick={checkNewHabitObject}
         className="bg-customRed p-4 w-[98%] rounded-md text-white"
       >
         Add a Habit
