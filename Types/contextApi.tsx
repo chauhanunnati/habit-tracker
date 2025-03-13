@@ -4,15 +4,17 @@ import { ReactNode, createContext, useState, useContext } from "react";
 import { GlobalContextType } from "./GlobalContextTypes";
 import { menuItemType } from "./MenuItemTypes";
 import { faRectangleList, faUser } from "@fortawesome/free-regular-svg-icons";
-import { faChartSimple, faLayerGroup, faSun, faMoon, faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons";
+import { faChartSimple, faList, faLayerGroup, faSun, faMoon, faGraduationCap, faCode } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { DarkModeItem } from "./DarkModeTypes";
+import { AreaType } from "./GlobalTypes";
 
 export type DarkModeItemType = {
   id: number;
   icon: IconProp;
   isSelected: boolean;
 };
+
 
 
 const GlobalContext = createContext<GlobalContextType>({
@@ -37,11 +39,11 @@ const GlobalContext = createContext<GlobalContextType>({
   openTimePickerWindowObject: {
     openTimePickerWindow: false,
     setOpenTimePickerWindow: () => {},
-  }
-  // allAreasObject: {
-  //   allAreas: [],
-  //   setAllAreas: () => {},
-  // }
+  },
+  allAreasObject: {
+    allAreas: [],
+    setAllAreas: () => {},
+  },
 });
 
 function GlobalContextProvider({ children }: { children: ReactNode }) {
@@ -56,11 +58,11 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
     { id: 2, icon: faMoon, isSelected: false },
   ]);
 
-  // const [allAreas, setAllAreas] = useState<AreaType[]>([
-  //   { id: 1, icon: faUser, name: "All" },
-  //   { id: 2, icon: faGraduationCap, name: "Study" },
-  //   { id: 3, icon: faCode, name: "Code" },
-  // ]);
+  const [allAreas, setAllAreas] = useState<AreaType[]>([
+    { id: 1, icon: faUser, name: "All" },
+    { id: 2, icon: faGraduationCap, name: "Study" },
+    { id: 3, icon: faCode, name: "Code" },
+  ]);
 
   const [openSideBar, setOpenSideBar] = useState(false);
   const [isDarkMode, setDarkMode] = useState<boolean>(false);
