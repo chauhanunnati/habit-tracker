@@ -67,6 +67,8 @@ function HabitWindow() {
     setHabitItem(copyHabitItem);
     };
 
+    console.log(habitItem);
+
     function changeRepeatOption(repeatOptions: RepeatOption[]) {
       // First, we filter only the element we selected
       const filterIsSelected = repeatOptions.filter(

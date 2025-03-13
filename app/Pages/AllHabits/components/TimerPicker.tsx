@@ -133,6 +133,8 @@ function TimerPicker({
       }
     }
   }, [openTimePickerWindow, timeValues]);
+
+  console.log(timeValues);
      
   useEffect(() => {
     function getCurrentTime() {
@@ -151,6 +153,7 @@ function TimerPicker({
       timeValuesCopy[0].text = formattedHour;
       timeValuesCopy[1].text = currentMinutes;
       setTimeValues(timeValuesCopy);
+
   
       const copyMeridiem = meridiem.map((singleMeridiem) => {
         if (singleMeridiem.text === AmPm) {
@@ -212,7 +215,9 @@ function TimerPicker({
           {/* Minutes field */}
           <input
             value={timeValues[1].text}
-            onClick={() => updateTimeValues(1)}
+            onClick={() => {
+              updateTimeValues(1);
+            }}
             ref={minutesRef}
             onChange={(event) => updateTimeValuesText(event, 1)}
             onBlur={() => handleOnBlur(1)}

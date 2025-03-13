@@ -10,3 +10,4 @@ npm install @mui/icons-material
 npm install recharts
 npm install @mui/x-date-pickers
 npm install dayjs
+npm install uuid
