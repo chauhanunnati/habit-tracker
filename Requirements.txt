@@ -11,3 +11,4 @@ npm install recharts
 npm install @mui/x-date-pickers
 npm install dayjs
 npm install uuid
+npm install react-hot-toast

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import HabitWindowArea from "./HabitWindow/HabitWindowAreas";
 import { addNewHabit } from "@/utils/allHabitUtils/addNewHabit";
 import { AreaType,HabitType } from "@/Types/GlobalTypes";
-
+import toast from 'react-hot-toast';
 
 type FrequencyType = {
   type: string;
@@ -558,7 +558,7 @@ function SaveButton({ habit }: { habit:HabitType }) {
 
   function checkNewHabitObject() {
       if (habit.name.trim() === "") {
-          return console.log("The habit name field is still empty!");
+          return toast.error("The Habit name field is still empty!");
       }
 
       const habitExist = allHabits.some(
@@ -569,7 +569,7 @@ function SaveButton({ habit }: { habit:HabitType }) {
           addNewHabit({ allHabits, setAllHabits, newHabit: habit });
           setOpenHabitWindow(false);
       } else {
-          console.log("Habit already exists!");
+          toast.error("The Habit name field is still empty!");
       }
   }
 
